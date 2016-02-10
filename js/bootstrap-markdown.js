@@ -674,7 +674,11 @@
       return (
 
           ('selectionStart' in e && function() {
-              e.value = e.value.substr(0, e.selectionStart) + text + e.value.substr(e.selectionEnd, e.value.length);
+              var newVal = e.value.substr(0, e.selectionStart) + text + e.value.substr(e.selectionEnd, e.value.length);
+              var tEvent = document.createEvent('TextEvent');
+              tEvent.initTextEvent('textInput', true, true, null, newVal);
+              // fire the event on the the textarea
+              e.dispatchEvent(tEvent);
               // Set cursor to the last replacement end
               e.selectionStart = e.value.length;
               return this;
